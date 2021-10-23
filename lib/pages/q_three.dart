@@ -25,11 +25,6 @@ class _QThreeState extends State<QThree> with SingleTickerProviderStateMixin {
       duration: const Duration(milliseconds: 200), vsync: this);
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   void dispose() {
     aniController.dispose();
     super.dispose();

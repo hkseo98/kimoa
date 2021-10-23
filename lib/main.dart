@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:kimoa/fonts.dart';
 import 'package:kimoa/pages/q_one.dart';
 
 void main() {
@@ -29,44 +30,80 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
+  late Animation<Color?> animation =
+      ColorTween(begin: const Color(0xff5A5A5A), end: Colors.white)
+          .animate(aniController)
+        ..addListener(() {
+          setState(() {});
+        });
+  late AnimationController aniController = AnimationController(
+      reverseDuration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 1000),
+      vsync: this);
+
+  @override
+  void initState() {
+    aniController.repeat(reverse: true);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    aniController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/logo.png',
-              width: 250,
-            ),
-            const SizedBox(
-              height: 30.33,
-            ),
-            Image.asset(
-              'assets/title.png',
-              width: 128.78,
-            ),
-            const SizedBox(
-              height: 120.04,
-            ),
-            SizedBox(
-              width: 350,
-              child: TextButton(
-                  style: ButtonStyle(
-                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () {
+            Get.to(const QOne());
+          },
+          child: Container(
+            color: Colors.white,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    '키모아가 미래 자녀의 키를',
+                    style: TextStyle(
+                        color: Color(0xff5A6BFF),
+                        fontSize: 60,
+                        fontFamily: MyFontFamily.gmarketBold),
                   ),
-                  onPressed: () {
-                    Get.to(const QOne());
-                  },
-                  child: Image.asset(
-                    'assets/start_button.png',
-                    width: 350.15,
-                  )),
-            )
-          ],
+                  const Text(
+                    '예상해드립니다',
+                    style: TextStyle(
+                        color: Color(0xff5A6BFF),
+                        fontSize: 60,
+                        fontFamily: MyFontFamily.gmarketBold),
+                  ),
+                  const SizedBox(
+                    height: 88,
+                  ),
+                  Image.asset(
+                    'assets/logo.png',
+                    width: 250,
+                  ),
+                  const SizedBox(
+                    height: 73,
+                  ),
+                  Text(
+                    '화면을 터치해주세요',
+                    style: TextStyle(color: animation.value, fontSize: 22),
+                  )
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
